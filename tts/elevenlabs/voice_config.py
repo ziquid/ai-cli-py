@@ -33,6 +33,7 @@ voice_config = {
             "stability": 0.38,
             "similarity_boost": 0.85,
             "style": 0.4,
+            "speed": 0.7,
             "use_speaker_boost": True
         },
         "apply_text_normalization": "on"
