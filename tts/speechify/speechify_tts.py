@@ -10,9 +10,9 @@ from var_dump import var_dump
 from dotenv import load_dotenv
 from speechify import Speechify
 from speechify.tts import GetSpeechOptionsRequest
+from speechify.core.api_error import ApiError
 from voice_config import voice_config, list_voice_config
 from helper_functions import print_usage, DEFAULT_TEXT
-
 
 
 def generate_tts(voice, text):
@@ -22,27 +22,33 @@ def generate_tts(voice, text):
     client = Speechify(token=api_key)
     text = text.replace("%%name%%", voice)
 
-    audio = client.tts.audio.speech(
-        input=text,
-        **voice_config[voice]
-    )
+    try:
+        audio = client.tts.audio.speech(
+            input=text,
+            **voice_config[voice]
+        )
+    except ApiError as e:
+        print(f"Error: {e}")
+        print(e.status_code)
+        print(e.body)
+        sys.exit(1)
 
-#     var_dump(audio)
-#     print("audio object:", vars(audio))
-#     for name, value in getmembers(audio):
-#         if not name.startswith('__'):
-#             value_repr = repr(value)
-#             value_trunc = value_repr[:60] + "..." if len(value_repr) > 60 else value_repr
-#             pprint(f"{name}: {value_trunc}")
+    #     var_dump(audio)
+    #     print("audio object:", vars(audio))
+    # for name, value in getmembers(audio):
+    #     if not name.startswith('__'):
+    #         value_repr = repr(value)
+    #         value_trunc = value_repr[:60] + "..." if len(value_repr) > 60 else value_repr
+    #         pprint(f"{name}: {value_trunc}")
 
     return audio
 
 
 def save(audio, output_file):
-	decoded = base64.b64decode(audio.audio_data)
-	with open(output_file, "wb") as f:
-		f.write(decoded)
-	f.close()
+    decoded = base64.b64decode(audio.audio_data)
+    with open(output_file, "wb") as f:
+        f.write(decoded)
+    f.close()
 
 
 def main(argv):

@@ -7,7 +7,7 @@ def print_usage():
 Options:
 [-h|--help]: Show this help message.
 [-i|--input <filename>]: Get text to read from a file. Use '-' to read from stdin.
-[-o|--output <filename>]: Save the audio to a file.  If not specified, audio will be saved to the file 'elevenlabs_tts.mp3'.
+[-o|--output <filename>]: Save the audio to a file.  If not specified, audio will be saved to the file 'speechify_tts.wav'.
 [-p|--play]: Play the audio after saving it.
 [-P|--Play]: Play the audio without saving it.
 [-t|--text <text>]: Specify the text to read.
